@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Area, AreaChart } from "recharts"
 
 interface ScoreSparklineProps {
@@ -7,7 +8,10 @@ interface ScoreSparklineProps {
 }
 
 export function ScoreSparkline({ scores }: ScoreSparklineProps) {
-  if (scores.length < 2) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted || scores.length < 2) {
     return (
       <span className="text-xs text-muted-foreground">—</span>
     )
