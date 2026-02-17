@@ -1,6 +1,7 @@
-import { desc, eq } from "drizzle-orm"
+import { desc, eq, gte, asc } from "drizzle-orm"
+import { sql } from "drizzle-orm"
 import { db } from "@/lib/db"
-import { executives, companies } from "@/lib/db/schema"
+import { executives, companies, githubSnapshots } from "@/lib/db/schema"
 import { LeaderboardTable } from "@/components/leaderboard-table"
 
 export const revalidate = 3600 // ISR: revalidate every hour
@@ -15,6 +16,26 @@ export default async function HomePage() {
     .innerJoin(companies, eq(executives.companyId, companies.id))
     .orderBy(desc(executives.currentScore))
 
+  // Fetch last 9 days of scores for sparklines
+  const snapshots = await db
+    .select({
+      executiveId: githubSnapshots.executiveId,
+      snapshotDate: githubSnapshots.snapshotDate,
+      cookingScore: githubSnapshots.cookingScore,
+    })
+    .from(githubSnapshots)
+    .where(gte(githubSnapshots.snapshotDate, sql`current_date - 9`))
+    .orderBy(asc(githubSnapshots.snapshotDate))
+
+  // Group scores by executiveId
+  const scoreHistory: Record<string, number[]> = {}
+  for (const snap of snapshots) {
+    if (!scoreHistory[snap.executiveId]) {
+      scoreHistory[snap.executiveId] = []
+    }
+    scoreHistory[snap.executiveId].push(snap.cookingScore)
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 space-y-2">
@@ -27,7 +48,7 @@ export default async function HomePage() {
         </p>
       </div>
 
-      <LeaderboardTable entries={allExecutives} />
+      <LeaderboardTable entries={allExecutives} scoreHistory={scoreHistory} />
     </div>
   )
 }
