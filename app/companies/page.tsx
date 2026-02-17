@@ -108,12 +108,12 @@ export default async function CompaniesPage() {
     .sort((a, b) => b.avgScore - a.avgScore)
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="mx-auto max-w-[1100px] px-6 py-12 md:px-10">
       <div className="mb-8 space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">
+        <h1 className="bg-gradient-to-br from-foreground to-orange-500 bg-clip-text text-4xl font-black tracking-tight text-transparent">
           Company Leaderboard
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-[1.05rem] text-muted-foreground">
           Which companies have leadership that actually codes? Ranked by average
           executive Cook Index score.
         </p>

@@ -4,9 +4,9 @@ import { SCORING_WEIGHTS } from "@/lib/constants"
 
 export default function AboutPage() {
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-3xl font-bold">About csuitecook</h1>
-      <p className="mt-2 text-lg text-muted-foreground">
+    <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
+      <h1 className="bg-gradient-to-br from-foreground to-orange-500 bg-clip-text text-3xl font-black tracking-tight text-transparent">About csuitecook</h1>
+      <p className="mt-2 text-[1.05rem] text-muted-foreground">
         How we measure who&apos;s actually building.
       </p>
 
