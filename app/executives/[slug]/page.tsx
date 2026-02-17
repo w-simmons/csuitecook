@@ -99,16 +99,37 @@ export default async function ExecutivePage({ params }: Props) {
             >
               {company.name}
             </Link>
+            {company.ticker && (
+              <Badge variant="outline" className="ml-1.5 align-middle text-xs">
+                {company.ticker}
+              </Badge>
+            )}
           </p>
-          {executive.githubUsername && (
-            <a
-              href={`https://github.com/${executive.githubUsername}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              @{executive.githubUsername}
-            </a>
+          <div className="flex items-center gap-2">
+            {executive.githubUsername && (
+              <a
+                href={`https://github.com/${executive.githubUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:underline"
+              >
+                @{executive.githubUsername}
+              </a>
+            )}
+            {executive.codingStatus && executive.codingStatus !== "never" && (
+              <Badge variant="outline" className="text-xs">
+                {executive.codingStatus === "active"
+                  ? "Active Coder"
+                  : executive.codingStatus === "sometimes"
+                    ? "Sometimes Codes"
+                    : "Engineering Background"}
+              </Badge>
+            )}
+          </div>
+          {executive.bio && (
+            <p className="mt-1 text-sm text-muted-foreground max-w-xl">
+              {executive.bio}
+            </p>
           )}
         </div>
         <div className="flex flex-col items-center">

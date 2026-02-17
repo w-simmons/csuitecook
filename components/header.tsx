@@ -15,6 +15,12 @@ export function Header() {
             Leaderboard
           </Link>
           <Link
+            href="/companies"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Companies
+          </Link>
+          <Link
             href="/about"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >

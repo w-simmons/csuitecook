@@ -13,8 +13,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ScoreSparkline } from "@/components/score-sparkline"
 import { getScoreTier } from "@/lib/constants"
-import { formatDistanceToNow } from "date-fns"
 import type { Executive, Company } from "@/lib/db/schema"
 
 interface LeaderboardEntry {
@@ -24,9 +24,10 @@ interface LeaderboardEntry {
 
 interface LeaderboardTableProps {
   entries: LeaderboardEntry[]
+  scoreHistory?: Record<string, number[]>
 }
 
-export function LeaderboardTable({ entries }: LeaderboardTableProps) {
+export function LeaderboardTable({ entries, scoreHistory = {} }: LeaderboardTableProps) {
   const [filter, setFilter] = useState<"all" | "c-suite" | "founder">("all")
 
   const filtered =
@@ -52,10 +53,8 @@ export function LeaderboardTable({ entries }: LeaderboardTableProps) {
               <TableHead>Executive</TableHead>
               <TableHead className="hidden sm:table-cell">Company</TableHead>
               <TableHead className="text-right">Score</TableHead>
+              <TableHead className="hidden md:table-cell">Trend</TableHead>
               <TableHead className="hidden md:table-cell">Status</TableHead>
-              <TableHead className="hidden lg:table-cell text-right">
-                Last Active
-              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -66,6 +65,7 @@ export function LeaderboardTable({ entries }: LeaderboardTableProps) {
                 .map((n) => n[0])
                 .join("")
                 .slice(0, 2)
+              const history = scoreHistory[entry.executive.id] ?? []
 
               return (
                 <TableRow key={entry.executive.id}>
@@ -87,7 +87,12 @@ export function LeaderboardTable({ entries }: LeaderboardTableProps) {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">{entry.executive.name}</p>
+                        <div className="flex items-center gap-1.5">
+                          <p className="font-medium">{entry.executive.name}</p>
+                          {entry.executive.codingStatus === "active" && (
+                            <span className="inline-block h-2 w-2 rounded-full bg-green-500" title="Active coder" />
+                          )}
+                        </div>
                         <p className="text-xs text-muted-foreground sm:hidden">
                           {entry.executive.title}
                         </p>
@@ -111,14 +116,10 @@ export function LeaderboardTable({ entries }: LeaderboardTableProps) {
                     </span>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    <Badge variant={tier.badgeVariant}>{tier.label}</Badge>
+                    <ScoreSparkline scores={history} />
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell text-right text-sm text-muted-foreground">
-                    {entry.executive.lastSyncedAt
-                      ? formatDistanceToNow(entry.executive.lastSyncedAt, {
-                          addSuffix: true,
-                        })
-                      : "Never"}
+                  <TableCell className="hidden md:table-cell">
+                    <Badge variant={tier.badgeVariant}>{tier.label}</Badge>
                   </TableCell>
                 </TableRow>
               )

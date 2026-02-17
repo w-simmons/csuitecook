@@ -24,7 +24,19 @@ async function seed() {
       .values(company)
       .onConflictDoUpdate({
         target: companies.id,
-        set: { name: company.name, ticker: company.ticker, industry: company.industry, category: company.category },
+        set: {
+          name: company.name,
+          ticker: company.ticker,
+          industry: company.industry,
+          companyType: company.companyType,
+          scale: company.scale,
+          foundedYear: company.foundedYear,
+          headquarters: company.headquarters,
+          description: company.description,
+          websiteUrl: company.websiteUrl,
+          employeeRange: company.employeeRange,
+          sector: company.sector,
+        },
       })
   }
   console.log(`Inserted ${seedCompanies.length} companies`)
@@ -39,7 +51,15 @@ async function seed() {
       })
       .onConflictDoUpdate({
         target: executives.id,
-        set: { name: exec.name, title: exec.title, companyId: exec.companyId, githubUsername: exec.githubUsername, category: exec.category },
+        set: {
+          name: exec.name,
+          title: exec.title,
+          companyId: exec.companyId,
+          githubUsername: exec.githubUsername,
+          category: exec.category,
+          codingStatus: exec.codingStatus,
+          bio: exec.bio,
+        },
       })
   }
   console.log(`Inserted ${seedExecutives.length} executives`)
