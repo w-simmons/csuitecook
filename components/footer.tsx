@@ -1,10 +1,14 @@
+import Link from "next/link"
+
 export function Footer() {
   return (
-    <footer className="border-t py-6">
-      <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+    <footer className="border-t border-border py-10">
+      <div className="mx-auto max-w-[1100px] px-6 text-center font-mono text-xs text-muted-foreground md:px-10">
         <p>
-          csuitecook &mdash; Tracking who&apos;s actually building.
-          Data from GitHub public activity.
+          Data from GitHub public activity &middot;{" "}
+          <Link href="/about" className="text-primary hover:underline">
+            How we score
+          </Link>
         </p>
       </div>
     </footer>

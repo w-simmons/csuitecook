@@ -17,11 +17,11 @@ export function CookingScore({ score, size = "md" }: CookingScoreProps) {
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className={cn(sizeClasses[size], tier.color)}>
+      <span className={cn("font-mono text-orange-500", sizeClasses[size])}>
         {Math.round(score)}
       </span>
       {size !== "sm" && (
-        <span className={cn("text-xs font-medium", tier.color)}>
+        <span className={cn("font-mono text-xs font-medium", tier.color)}>
           {tier.label}
         </span>
       )}

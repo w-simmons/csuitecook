@@ -11,9 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScoreSparkline } from "@/components/score-sparkline"
 import { getScoreTier } from "@/lib/constants"
+import { cn } from "@/lib/utils"
 import type { Company } from "@/lib/db/schema"
 
 export interface CompanyLeaderboardEntry {
@@ -43,78 +43,126 @@ export function CompanyLeaderboard({ entries }: CompanyLeaderboardProps) {
 
   const filtered = entries.filter((e) => matchesFilter(e.company.companyType, filter))
 
+  const filters: { value: FilterValue; label: string }[] = [
+    { value: "all", label: "All" },
+    { value: "public", label: "Public" },
+    { value: "private_startup", label: "Private" },
+    { value: "open_source", label: "Open Source" },
+  ]
+
   return (
     <div className="space-y-4">
-      <Tabs value={filter} onValueChange={(v) => setFilter(v as FilterValue)}>
-        <TabsList>
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="public">Public</TabsTrigger>
-          <TabsTrigger value="private_startup">Private</TabsTrigger>
-          <TabsTrigger value="open_source">Open Source</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <span className="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-muted-foreground">
+          Rankings
+        </span>
+        <div className="flex gap-1 overflow-x-auto rounded-lg border border-border bg-card p-1">
+          {filters.map(({ value, label }) => (
+            <button
+              key={value}
+              onClick={() => setFilter(value)}
+              className={cn(
+                "shrink-0 rounded-md px-3 py-1.5 text-[0.78rem] font-semibold transition-all sm:px-4",
+                filter === value
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-12">#</TableHead>
-              <TableHead>Company</TableHead>
-              <TableHead className="hidden sm:table-cell">Industry</TableHead>
-              <TableHead className="text-right">Avg Score</TableHead>
-              <TableHead className="hidden md:table-cell">Trend</TableHead>
-              <TableHead className="hidden sm:table-cell text-right">Executives</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((entry, index) => {
-              const tier = getScoreTier(entry.avgScore)
+      <Table>
+        <TableHeader>
+          <TableRow className="border-none hover:bg-transparent">
+            <TableHead className="w-12 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground font-normal">
+              #
+            </TableHead>
+            <TableHead className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground font-normal">
+              Company
+            </TableHead>
+            <TableHead className="hidden sm:table-cell font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground font-normal">
+              Industry
+            </TableHead>
+            <TableHead className="text-center font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground font-normal">
+              Avg Score
+            </TableHead>
+            <TableHead className="hidden md:table-cell text-center font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground font-normal w-[120px]">
+              Trend
+            </TableHead>
+            <TableHead className="hidden sm:table-cell text-center font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground font-normal">
+              Executives
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filtered.map((entry, index) => {
+            const tier = getScoreTier(entry.avgScore)
+            const scoreClass =
+              entry.avgScore >= 62
+                ? "text-orange-500"
+                : entry.avgScore >= 50
+                  ? "text-amber-500"
+                  : "text-muted-foreground"
 
-              return (
-                <TableRow key={entry.company.id}>
-                  <TableCell className="font-medium text-muted-foreground">
+            return (
+              <TableRow
+                key={entry.company.id}
+                className="border-none bg-card transition-all hover:translate-x-1 hover:bg-accent [&>td:first-child]:rounded-l-lg [&>td:last-child]:rounded-r-lg"
+              >
+                <TableCell className="py-3.5">
+                  <span className="font-mono text-sm font-bold text-muted-foreground">
                     {index + 1}
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      href={`/companies/${entry.company.id}`}
-                      className="hover:underline"
-                    >
-                      <p className="font-medium">{entry.company.name}</p>
-                      {entry.company.ticker && (
-                        <p className="text-xs text-muted-foreground">
-                          {entry.company.ticker}
-                        </p>
-                      )}
-                    </Link>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell text-sm text-muted-foreground">
-                    {entry.company.industry}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <span className={`text-lg font-bold ${tier.color}`}>
-                      {Math.round(entry.avgScore)}
-                    </span>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <ScoreSparkline scores={entry.scoreHistory} />
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell text-right text-sm text-muted-foreground">
-                    {entry.activeCoders}/{entry.executiveCount} coding
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-            {filtered.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                  No companies found
+                  </span>
+                </TableCell>
+                <TableCell className="py-3.5">
+                  <Link
+                    href={`/companies/${entry.company.id}`}
+                    className="hover:opacity-80"
+                  >
+                    <p className="text-[0.88rem] font-semibold tracking-tight">
+                      {entry.company.name}
+                    </p>
+                    {entry.company.ticker && (
+                      <p className="font-mono text-xs text-muted-foreground">
+                        {entry.company.ticker}
+                      </p>
+                    )}
+                  </Link>
+                </TableCell>
+                <TableCell className="hidden sm:table-cell py-3.5 text-sm text-muted-foreground">
+                  {entry.company.industry}
+                </TableCell>
+                <TableCell className="py-3.5 text-center">
+                  <span className={cn("font-mono text-base font-bold", scoreClass)}>
+                    {Math.round(entry.avgScore)}
+                  </span>
+                </TableCell>
+                <TableCell className="hidden md:table-cell py-3.5">
+                  <div className="flex justify-center">
+                    <ScoreSparkline
+                      scores={entry.scoreHistory}
+                      color={tier.status === "smoking" ? "orange" : "muted"}
+                    />
+                  </div>
+                </TableCell>
+                <TableCell className="hidden sm:table-cell py-3.5 text-center font-mono text-sm text-muted-foreground">
+                  {entry.activeCoders}/{entry.executiveCount} coding
                 </TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            )
+          })}
+          {filtered.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
+                No companies found
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   )
 }

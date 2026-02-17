@@ -18,22 +18,17 @@ export function ExecutiveCard({ executive, company }: ExecutiveCardProps) {
 
   return (
     <Link href={`/executives/${executive.id}`}>
-      <Card className="transition-colors hover:bg-muted/50">
+      <Card className="transition-all hover:-translate-y-0.5 hover:bg-accent">
         <CardContent className="flex items-center gap-4 p-4">
-          <Avatar className="h-12 w-12">
+          <Avatar className="h-12 w-12 border border-border">
             <AvatarImage src={executive.avatarUrl ?? undefined} alt={executive.name} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="font-medium truncate">{executive.name}</p>
+            <p className="font-semibold tracking-tight truncate">{executive.name}</p>
             <p className="text-sm text-muted-foreground truncate">
               {executive.title}, {company.name}
             </p>
-            {executive.bio && (
-              <p className="text-xs text-muted-foreground truncate mt-0.5">
-                {executive.bio}
-              </p>
-            )}
           </div>
           <CookingScore score={executive.currentScore} size="sm" />
         </CardContent>
