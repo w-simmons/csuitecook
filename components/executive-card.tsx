@@ -29,6 +29,11 @@ export function ExecutiveCard({ executive, company }: ExecutiveCardProps) {
             <p className="text-sm text-muted-foreground truncate">
               {executive.title}, {company.name}
             </p>
+            {executive.bio && (
+              <p className="text-xs text-muted-foreground truncate mt-0.5">
+                {executive.bio}
+              </p>
+            )}
           </div>
           <CookingScore score={executive.currentScore} size="sm" />
         </CardContent>

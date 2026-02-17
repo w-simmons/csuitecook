@@ -9,13 +9,24 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core"
 
+export type CompanyType = "public" | "private" | "subsidiary" | "non_profit" | "open_source_project"
+export type CompanyScale = "mega_cap" | "large_cap" | "mid_cap" | "small_cap" | "unicorn" | "growth" | "early_stage" | "bootstrapped"
+export type EmployeeRange = "1-10" | "11-50" | "51-200" | "201-1000" | "1001-5000" | "5001-10000" | "10000+"
+export type Sector = "Technology" | "Finance" | "Healthcare" | "Energy" | "Industrial" | "Consumer" | "Telecommunications" | "Aerospace & Defense" | "Automotive" | "Retail" | "Entertainment" | "Real Estate" | "Other"
+
 export const companies = pgTable("companies", {
   id: text("id").primaryKey(), // slug
   name: text("name").notNull(),
   ticker: text("ticker"),
-  logoUrl: text("logo_url"),
   industry: text("industry"),
-  category: text("category").notNull(), // "public" | "startup"
+  companyType: text("company_type").notNull(), // CompanyType
+  scale: text("scale"), // CompanyScale
+  foundedYear: integer("founded_year"),
+  headquarters: text("headquarters"),
+  description: text("description"),
+  websiteUrl: text("website_url"),
+  employeeRange: text("employee_range"), // EmployeeRange
+  sector: text("sector"), // Sector
 })
 
 export const executives = pgTable("executives", {
@@ -28,6 +39,8 @@ export const executives = pgTable("executives", {
   githubUsername: text("github_username"),
   avatarUrl: text("avatar_url"),
   category: text("category").notNull(), // "c-suite" | "founder"
+  codingStatus: text("coding_status").notNull().default("never"), // "active" | "sometimes" | "background" | "never"
+  bio: text("bio"),
   currentScore: real("current_score").notNull().default(0),
   lastSyncedAt: timestamp("last_synced_at"),
 })
