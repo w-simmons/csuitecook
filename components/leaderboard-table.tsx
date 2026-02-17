@@ -15,7 +15,6 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScoreSparkline } from "@/components/score-sparkline"
 import { getScoreTier } from "@/lib/constants"
-import { formatDistanceToNow } from "date-fns"
 import type { Executive, Company } from "@/lib/db/schema"
 
 interface LeaderboardEntry {
@@ -56,9 +55,6 @@ export function LeaderboardTable({ entries, scoreHistory = {} }: LeaderboardTabl
               <TableHead className="text-right">Score</TableHead>
               <TableHead className="hidden md:table-cell">Trend</TableHead>
               <TableHead className="hidden md:table-cell">Status</TableHead>
-              <TableHead className="hidden lg:table-cell text-right">
-                Last Active
-              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -125,19 +121,12 @@ export function LeaderboardTable({ entries, scoreHistory = {} }: LeaderboardTabl
                   <TableCell className="hidden md:table-cell">
                     <Badge variant={tier.badgeVariant}>{tier.label}</Badge>
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell text-right text-sm text-muted-foreground">
-                    {entry.executive.lastSyncedAt
-                      ? formatDistanceToNow(entry.executive.lastSyncedAt, {
-                          addSuffix: true,
-                        })
-                      : "Never"}
-                  </TableCell>
                 </TableRow>
               )
             })}
             {filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                   No executives found
                 </TableCell>
               </TableRow>

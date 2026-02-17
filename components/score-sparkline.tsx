@@ -28,7 +28,7 @@ export function ScoreSparkline({ scores }: ScoreSparklineProps) {
     <div className="h-7 w-20">
       <AreaChart width={80} height={28} data={data} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
         <defs>
-          <linearGradient id={`sparkGrad-${fillColor}`} x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={`sparkGrad-${fillColor.slice(1)}`} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={fillColor} stopOpacity={0.3} />
             <stop offset="100%" stopColor={fillColor} stopOpacity={0.05} />
           </linearGradient>
@@ -38,7 +38,7 @@ export function ScoreSparkline({ scores }: ScoreSparklineProps) {
           dataKey="value"
           stroke={strokeColor}
           strokeWidth={1.5}
-          fill={`url(#sparkGrad-${fillColor})`}
+          fill={`url(#sparkGrad-${fillColor.slice(1)})`}
           isAnimationActive={false}
         />
       </AreaChart>
