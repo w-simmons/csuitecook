@@ -59,8 +59,8 @@ export default async function CompanyPage({ params }: Props) {
   const avgTier = getScoreTier(avgScore)
 
   return (
-    <div className="mx-auto max-w-[1100px] px-6 py-12 md:px-10">
-      <div className="mb-8">
+    <div className="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12 md:px-10">
+      <div className="mb-6 sm:mb-8">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-bold">{company.name}</h1>
           {company.ticker && (

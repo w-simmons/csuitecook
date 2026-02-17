@@ -44,11 +44,11 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <div className="px-6 pt-14 pb-5 text-center md:px-10">
-        <h1 className="bg-gradient-to-br from-foreground to-orange-500 bg-clip-text text-[clamp(2.2rem,5vw,3.8rem)] font-black leading-[1.1] tracking-tight text-transparent">
+      <div className="px-4 pt-10 pb-4 text-center sm:px-6 sm:pt-14 sm:pb-5 md:px-10">
+        <h1 className="bg-gradient-to-br from-foreground to-orange-500 bg-clip-text text-[clamp(1.8rem,5vw,3.8rem)] font-black leading-[1.1] tracking-tight text-transparent">
           Who&apos;s Actually Building?
         </h1>
-        <p className="mt-3 text-[1.05rem] text-muted-foreground">
+        <p className="mt-3 text-sm text-muted-foreground sm:text-[1.05rem]">
           Tracking which tech leaders ship code &middot; Updated daily from
           public GitHub
         </p>
@@ -57,8 +57,8 @@ export default async function HomePage() {
 
       {/* Top 5 Podium */}
       {top5.length > 0 && (
-        <section className="mx-auto max-w-[1100px] px-6 pt-8 pb-5 md:px-10">
-          <p className="mb-6 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-muted-foreground">
+        <section className="mx-auto max-w-[1100px] px-4 pt-6 pb-4 sm:px-6 sm:pt-8 sm:pb-5 md:px-10">
+          <p className="mb-4 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-muted-foreground sm:mb-6">
             Top {Math.min(5, top5.length)} &middot; This Week
           </p>
           <Podium entries={top5} scoreHistory={scoreHistory} />
@@ -67,7 +67,7 @@ export default async function HomePage() {
 
       {/* Full Rankings Table */}
       {rest.length > 0 && (
-        <section className="mx-auto max-w-[1100px] px-6 pt-5 pb-20 md:px-10">
+        <section className="mx-auto max-w-[1100px] px-4 pt-4 pb-16 sm:px-6 sm:pt-5 sm:pb-20 md:px-10">
           <LeaderboardTable
             entries={rest}
             scoreHistory={scoreHistory}
@@ -78,7 +78,7 @@ export default async function HomePage() {
 
       {/* Show table for all if less than 5 */}
       {allExecutives.length > 0 && allExecutives.length <= 5 && (
-        <section className="mx-auto max-w-[1100px] px-6 pt-5 pb-20 md:px-10">
+        <section className="mx-auto max-w-[1100px] px-4 pt-4 pb-16 sm:px-6 sm:pt-5 sm:pb-20 md:px-10">
           <LeaderboardTable
             entries={allExecutives}
             scoreHistory={scoreHistory}

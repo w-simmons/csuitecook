@@ -79,10 +79,10 @@ export default async function ExecutivePage({ params }: Props) {
   const languages = (snapshot?.languages ?? {}) as Record<string, number>
 
   return (
-    <div className="mx-auto max-w-[1100px] px-6 py-12 md:px-10">
+    <div className="mx-auto max-w-[1100px] px-4 py-8 sm:px-6 sm:py-12 md:px-10">
       {/* Profile Header */}
-      <div className="mb-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-        <Avatar className="h-20 w-20">
+      <div className="mb-6 flex flex-col items-start gap-4 sm:mb-8 sm:flex-row sm:items-center sm:gap-6">
+        <Avatar className="h-16 w-16 sm:h-20 sm:w-20">
           <AvatarImage
             src={executive.avatarUrl ?? undefined}
             alt={executive.name}

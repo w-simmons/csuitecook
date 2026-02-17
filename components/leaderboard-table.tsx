@@ -43,17 +43,17 @@ export function LeaderboardTable({
   return (
     <div className="space-y-4">
       {/* Filter pills */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <span className="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-muted-foreground">
           Full Rankings {startRank > 1 ? `\u00b7 ${startRank}-${startRank + entries.length - 1}` : ""}
         </span>
-        <div className="flex gap-1 rounded-lg border border-border bg-card p-1">
+        <div className="flex gap-1 overflow-x-auto rounded-lg border border-border bg-card p-1">
           {(["all", "c-suite", "founder"] as const).map((value) => (
             <button
               key={value}
               onClick={() => setFilter(value)}
               className={cn(
-                "rounded-md px-4 py-1.5 text-[0.78rem] font-semibold transition-all",
+                "shrink-0 rounded-md px-3 py-1.5 text-[0.78rem] font-semibold transition-all sm:px-4",
                 filter === value
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
